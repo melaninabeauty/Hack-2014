@@ -28,7 +28,7 @@ public class MainActivity extends Activity {
         // your application to the Home screen.
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         // Adds the back stack for the Intent (but not the Intent itself)
-        stackBuilder.addParentStack(ResultActivity.class);
+        stackBuilder.addParentStack(MainActivity.class);
         // Adds the Intent that starts the Activity to the top of the stack
         stackBuilder.addNextIntent(resultIntent);
         PendingIntent resultPendingIntent =
@@ -44,8 +44,20 @@ public class MainActivity extends Activity {
      /* */
      }
    
-
-
+    //user clicks the record button
+    public void onClick(View view) {
+    	DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+			//to do once button is pressed
+    		
+    		Intent startMain = new Intent(Intent.ACTION_MAIN);
+    		startMain.addCategory(Intent.CATEGORY_HOME);
+    		startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    		startActivity(startMain);
+    		
+    	}
+    }
+    
+    
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
