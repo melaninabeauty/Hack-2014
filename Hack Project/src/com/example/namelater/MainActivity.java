@@ -9,6 +9,7 @@ import android.os.Environment;
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
@@ -32,6 +33,7 @@ import com.google.api.services.drive.Drive;
 import com.google.api.services.drive.DriveScopes;
 import com.google.api.services.drive.model.File;
 */
+
 @SuppressLint("NewApi")
 public class MainActivity extends Activity {
 
@@ -42,44 +44,33 @@ public class MainActivity extends Activity {
     
     private MediaRecorder mRecorder = null;
 	
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-	@SuppressLint("NewApi")
-	@Override
+   	
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //To create a notification
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.notification_icon)
-                .setContentTitle("My notification")
-                .setContentText("App Running");
-               
-        // Creates an explicit intent for an Activity in your app
-        Intent resultIntent = new Intent(this, MainActivity.class);
-
-        // The stack builder object will contain an artificial back stack for the
-        // started Activity.
-        // This ensures that navigating backward from the Activity leads out of
-        // your application to the Home screen.
-       TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        // Adds the back stack for the Intent (but not the Intent itself)
-       // stackBuilder.addParentStack(MainActivity.class);
-        // Adds the Intent that starts the Activity to the top of the stack
-        stackBuilder.addNextIntent(resultIntent);
-        PendingIntent resultPendingIntent =
-                stackBuilder.getPendingIntent(
-                    0,
-                    PendingIntent.FLAG_UPDATE_CURRENT
-                );
-        mBuilder.setContentIntent(resultPendingIntent);
-        NotificationManager mNotificationManager =
-            (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        // mId allows you to update the notification later on.
-       // mNotificationManager.notify(mId, mBuilder.build());
+        //initialize notification manager
+        NotificationManager notificationManager = (NotificationManager) 
+          getSystemService(NOTIFICATION_SERVICE);
         
-       
+        
+		// Load the intent
+		Intent intent = new Intent(this, MainActivity.class);
+		PendingIntent myIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
+		// The notification icon in notification bar
+		Notification notify = new Notification.Builder(this)
+				.setContentTitle("TRUVoice").setContentText("")
+				.setSmallIcon(R.drawable.capture).setContentIntent(myIntent)
+				.setAutoCancel(true)
+				.addAction(R.drawable.capture, "Call", myIntent)
+				.addAction(R.drawable.capture, "More", myIntent)
+				.addAction(R.drawable.capture, "And more", myIntent).build();
+    
+		notificationManager.notify(0, notify); 
+        
+        
+        
         //Time now = new Time(Time.getCurrentTimezone());
     	//now.setToNow();
     	
@@ -94,6 +85,7 @@ public class MainActivity extends Activity {
         // Allow the user to register Google Drive email
         if (sp.getFloat(lastRunVersion, 0) == 0)
         {
+        	    		
 			// Store the latest run version
 			SharedPreferences.Editor edit = sp.edit();
 			edit.putFloat(lastRunVersion, (float) 1.1);
@@ -109,12 +101,10 @@ public class MainActivity extends Activity {
         // Else, start recording audio
         else
         {
+        	setContentView(R.layout.black);
         	
-        	Intent startMain = new Intent(Intent.ACTION_MAIN);
-    		startMain.addCategory(Intent.CATEGORY_HOME);
-    		startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-    		startActivity(startMain);
     		
+    		/*
         	mRecorder = new MediaRecorder();
             mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
             mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
@@ -126,8 +116,8 @@ public class MainActivity extends Activity {
             } catch (IOException e) {
                 Log.e(LOG_TAG, "prepare() failed");
             }
-
-            mRecorder.start();
+*/
+           // mRecorder.start();
         }
      }
     
