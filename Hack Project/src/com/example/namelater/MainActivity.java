@@ -18,6 +18,7 @@ public class MainActivity extends Activity {
                 .setSmallIcon(R.drawable.notification_icon)
                 .setContentTitle("My notification")
                 .setContentText("App Running");
+        // Random commit
         
         // Creates an explicit intent for an Activity in your app
         Intent resultIntent = new Intent(this, MainActivity.class);
